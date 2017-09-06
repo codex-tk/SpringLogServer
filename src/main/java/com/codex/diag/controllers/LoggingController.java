@@ -70,4 +70,16 @@ public class LoggingController {
 		ans.put("uuids", uuids );
 		return ans;
 	}
+	
+	@RequestMapping(value = "/get_location_logs", method = RequestMethod.GET)
+	public @ResponseBody HashMap<String, ArrayList<LocationLogRecord>> getLocationLogs(
+			@RequestParam(value = "begin") int begin,
+			@RequestParam(value = "end") int end) 
+	{
+		HashMap<String, ArrayList<LocationLogRecord>> logs = new HashMap<String, ArrayList<LocationLogRecord>>();
+
+		logs.put("logs", locationLogRepository.findByTimestamp(begin, end));
+		//
+		return logs;
+	}
 }

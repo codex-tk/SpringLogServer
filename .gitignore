@@ -382,3 +382,4 @@ cmake_gen
 build-*
 application.properties
 
+.gradle
