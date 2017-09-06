@@ -44,11 +44,10 @@ public class LoggingController {
 	}
 	
 	@RequestMapping(value = "/add_location_log", method = RequestMethod.POST)
-	public String addLocationLog(@RequestBody HashMap<String, ArrayList<LocationLogRecord>> logs) {
+	public void addLocationLog(@RequestBody HashMap<String, ArrayList<LocationLogRecord>> logs) {
 		for (LocationLogRecord r : logs.get("logs")) {
 			locationLogRepository.save(r);
 		}
-		return logs.toString();
 	}
 	
 	@RequestMapping( value = "/get_location_log_devices" , method = RequestMethod.GET )
@@ -73,9 +72,18 @@ public class LoggingController {
 	
 	@RequestMapping(value = "/get_location_logs", method = RequestMethod.GET)
 	public @ResponseBody HashMap<String, ArrayList<LocationLogRecord>> getLocationLogs(
-			@RequestParam(value = "begin") int begin,
-			@RequestParam(value = "end") int end) 
+			@RequestParam(value = "begin") long begin,
+			@RequestParam(value = "end") long end) 
 	{
+		if ( begin == 0 || end == 0 ) {
+			begin = 0;
+			end = System.currentTimeMillis();
+			/*
+			end = System.currentTimeMillis();
+			begin = end - 6000;
+			end += 10000;
+			*/
+		}
 		HashMap<String, ArrayList<LocationLogRecord>> logs = new HashMap<String, ArrayList<LocationLogRecord>>();
 
 		logs.put("logs", locationLogRepository.findByTimestamp(begin, end));

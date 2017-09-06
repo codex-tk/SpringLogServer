@@ -3,7 +3,11 @@ package com.codex.diag.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="tbl_log_records")
+@Table(name="tbl_log_records",
+		indexes = {
+	      @Index(name="idx_ts_tbl_log_records", columnList = "timestamp") ,
+	      @Index(name="idx_uuid_tbl_log_records", columnList = "uuid")
+	   })
 public class LogRecord {
 	@Id @GeneratedValue (strategy=GenerationType.SEQUENCE) @Column(name = "id")
 	long id;
